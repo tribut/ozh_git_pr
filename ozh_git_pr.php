@@ -80,8 +80,6 @@ class Ozh_Git_PR{
     /**
      * Simple curl wrapper
      *
-     * Note: SSL verification turned off on purpose
-     *
      * @param string $url URL to fetch
      * @return mixed false if error, string if body
      */
@@ -90,7 +88,7 @@ class Ozh_Git_PR{
         curl_setopt( $ch, CURLOPT_URL, $url );
         curl_setopt( $ch, CURLOPT_HEADER, 0 );
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER , 1 );
-        curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
         curl_setopt( $ch, CURLOPT_USERAGENT,'PHP Ozh_Git_PR 1.0' );
         $result = curl_exec( $ch );
         curl_close( $ch );
