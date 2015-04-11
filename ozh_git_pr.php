@@ -68,7 +68,7 @@ class Ozh_Git_PR{
         // First element of $argv will be the script file itself, second will be the PR number
 
         if( count( $argv ) != 2 or !ctype_digit( $argv[1] )) {
-            $this->error_and_die( "Usage :\ngit pr [PR number]\nSee README" );
+            $this->error_and_die( "Usage:\ngit pr [PR number]" );
             die();
         }
 
@@ -129,15 +129,13 @@ class Ozh_Git_PR{
         $json = $this->get_url( $url );
 
         if( $json == false ) {
-            echo "\n";
-            echo sprintf( "Could not find PR %s\n", $this->pr );
-            die();
+            $this->error_and_die( sprintf( "Could not find PR %s", $this->pr ) );
         }
 
         $json = json_decode( $json );
 
         if( !isset( $json->head->repo->clone_url ) or !isset( $json->head->ref ) ) {
-            $this->error_and_die( sprintf( "Could not find PR #%s !", $this->pr ) );
+            $this->error_and_die( sprintf( "Could not find PR #%s!", $this->pr ) );
         }
 
         $this->remote_url    = $json->head->repo->clone_url;
@@ -167,11 +165,8 @@ class Ozh_Git_PR{
      * @param string $die_msg  optional additional message (eg "script aborted")
      */
     function error_and_die( $error, $die_msg = '' ) {
-        echo "\n";
         echo "$error\n";
-        echo "\n";
         die( $die_msg );
-
     }
 
 
@@ -190,7 +185,7 @@ class Ozh_Git_PR{
         }
 
         if( preg_grep( '/fatal|error/', $output ) ) {
-            die( "\nScript aborted !\n" );
+            $this->error_and_die( 'Script aborted!' );
         }
 
         return $output;
